@@ -1,0 +1,49 @@
+OHR — PRE-SESSION BEHAVIORAL SUMMARY
+============================================================
+
+
+PATIENT: Marcus T. | Patient #OHR-0042
+DIAGNOSIS: Bipolar I Disorder
+MONITORING PERIOD: 21 days
+APPOINTMENT: Apr 29, 2026 | Dr. N. Hussain | Rutgers Psychiatry
+
+BASELINE (Days 1-7):
+- Sleep: 7.0 hrs/night
+- Phone usage: 146 mins/day
+- Late night usage: 11 mins/night
+- Daily steps: 8079
+
+RECENT PERIOD (Days 8-21):
+- Sleep: 4.2 hrs/night (-39% vs baseline)
+- Phone usage: 322 mins/day (120% vs baseline)
+- Late night usage: 169 mins/night (1414% vs baseline)
+- Daily steps: 12780 (58% vs baseline)
+- Nights with interrupted sleep: 14 of 14
+- Days medication not taken: 13 of 14
+
+============================================================
+
+AI-GENERATED CLINICAL SUMMARY:
+
+OVERALL TREND: High Concern
+
+BEHAVIORAL ALERT: Yes, the patient's recent behavioral data indicates a significant deviation from their baseline, suggesting a potential worsening of symptoms.
+
+SIGNAL HIGHLIGHTS:
+- Sleep: The patient's average sleep duration has decreased by 39% to 4.2 hours per night, with all 14 nights in the recent period showing interrupted sleep.
+- Phone activity: Phone usage has increased by 120% to 322 minutes per day, with a notable spike in late-night usage to 169 minutes per night, representing a 1414% increase.
+- Mobility: The patient's daily step count has increased by 58% to 12,780 steps, which may indicate increased energy or agitation.
+- Social rhythm: The data does not provide direct insights into social rhythm, but the significant changes in sleep, phone activity, and mobility may suggest disruptions to the patient's daily routine.
+
+MEDICATION ADHERENCE SIGNAL: The behavioral data suggests poor medication adherence, with the patient missing their medication on 13 out of 14 days in the recent period.
+
+CLINICAL FOCUS AREAS FOR TODAY'S SESSION:
+1. Sleep disturbance: The patient's severely reduced sleep duration and consistent interrupted sleep patterns.
+2. Increased energy and agitation: The significant rise in daily step count and late-night phone usage may indicate increased energy or agitation.
+3. Medication non-adherence: The patient's poor medication adherence, which may be contributing to their worsening symptoms.
+4. Potential manic or hypomanic episode: The combination of reduced sleep, increased energy, and poor medication adherence may suggest a potential manic or hypomanic episode.
+5. Coping mechanisms and daily routine: The patient's increased phone usage and disrupted sleep patterns may indicate a need to reassess their coping mechanisms and daily routine.
+
+============================================================
+Clinical decision-support only. Not a diagnostic tool.
+All signals relative to individual patient baseline.
