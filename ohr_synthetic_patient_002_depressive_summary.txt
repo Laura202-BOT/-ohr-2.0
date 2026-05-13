@@ -1,0 +1,68 @@
+OHR — PRE-SESSION BEHAVIORAL SUMMARY
+=================================================================
+
+
+PATIENT: Sarah M. — Patient #OHR-0043
+DIAGNOSIS: Bipolar I Disorder
+APPOINTMENT: Apr 29, 2026 · 2:00 PM | Dr. N. Hussain · Rutgers Psychiatry
+MONITORING PERIOD: 21 days
+
+BASELINE (Days 1-7):
+  Sleep:            7.0 hrs/night
+  Phone usage:      148 mins/day
+  Late-night usage: 10 mins/night
+  Daily steps:      8029
+  Meal regularity:  4.0/4
+  Social rhythm:    4.0/4
+
+RECENT PERIOD (Days 8-21):
+  Sleep:            10.7 hrs/night  (+53% vs baseline)
+  Phone usage:      49 mins/day   (-67% vs baseline)
+  Late-night usage: 1 mins/night  (-93% vs baseline)
+  Daily steps:      3058            (-62% vs baseline)
+  Meal regularity:  1.5/4           (-2.5 vs baseline)
+  Social rhythm:    1.6/4         (-2.4 vs baseline)
+  Interrupted sleep nights: 14 of 14
+  Medication not taken:     13 of 14 days
+
+SIGNAL CONFIDENCE ASSESSMENT:
+  Sleep signal confidence: High — corroborated by multiple signals
+  Corroborating signals flagged: 6 of 6
+  Overall summary confidence: High
+
+IMPORTANT NOTE ON SLEEP DATA:
+Sleep tracking from consumer devices carries an inherent margin of error.
+This summary treats sleep as a contributory signal only, never as standalone evidence.
+All sleep findings are weighted against corroborating behavioral signals before surfacing.
+
+=================================================================
+
+AI-GENERATED CLINICAL SUMMARY:
+
+OVERALL TREND: High Concern
+SUMMARY CONFIDENCE: High — The overall summary confidence is high due to the presence of multiple corroborating signals, including significant changes in sleep, phone usage, daily steps, meal regularity, and social rhythm.
+
+BEHAVIORAL ALERT: Yes
+The patient's recent 14-day period shows a significant increase in sleep hours, decrease in phone usage, and a substantial decline in daily steps, meal regularity, and social rhythm, with high confidence in these findings.
+
+SIGNAL HIGHLIGHTS:
+Sleep: 10.7 hours/night, a 53% increase from baseline, with high signal confidence corroborated by multiple signals.
+Phone activity: 49 minutes/day, a 67% decrease from baseline.
+Mobility: 3058 daily steps, a 62% decrease from baseline.
+Meal regularity: 1.5/4, a 2.5 decrease from baseline.
+Social rhythm: 1.6/4, a 2.4 decrease from baseline.
+
+MEDICATION ADHERENCE SIGNAL:
+The behavioral data suggests potential non-adherence to medication, as indicated by 13 out of 14 days of reported non-adherence, although this is a behavioral proxy and not confirmed adherence data.
+
+CLINICAL FOCUS AREAS FOR TODAY'S SESSION:
+1. Significant increase in sleep hours and potential impact on mood and daily functioning.
+2. Decrease in daily steps and mobility, potentially indicating reduced energy or motivation.
+3. Decline in meal regularity and social rhythm, which may be related to changes in mood or medication adherence.
+4. Potential non-adherence to medication and its possible effects on the patient's condition.
+5. The substantial decrease in phone usage, which may be a coping mechanism or an indicator of social withdrawal.
+
+=================================================================
+Clinical decision-support only. Not a diagnostic tool.
+All signals relative to individual patient baseline.
+Sleep data weighted against corroborating signals.
