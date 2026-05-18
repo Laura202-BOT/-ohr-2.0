@@ -1,0 +1,68 @@
+OHR — PRE-SESSION BEHAVIORAL SUMMARY
+=================================================================
+
+
+PATIENT: Marcus T. — Patient #OHR-0042
+DIAGNOSIS: Bipolar I Disorder
+APPOINTMENT: Apr 29, 2026 · 2:00 PM | Dr. N. Hussain · Rutgers Psychiatry
+MONITORING PERIOD: 21 days
+
+BASELINE (Days 1-7):
+  Sleep:            7.0 hrs/night
+  Phone usage:      146 mins/day
+  Late-night usage: 11 mins/night
+  Daily steps:      8079
+  Meal regularity:  4.0/4
+  Social rhythm:    4.0/4
+
+RECENT PERIOD (Days 8-21):
+  Sleep:            4.2 hrs/night  (-39% vs baseline)
+  Phone usage:      322 mins/day   (+120% vs baseline)
+  Late-night usage: 169 mins/night  (+1414% vs baseline)
+  Daily steps:      12780            (+58% vs baseline)
+  Meal regularity:  1.5/4           (-2.5 vs baseline)
+  Social rhythm:    1.6/4         (-2.4 vs baseline)
+  Interrupted sleep nights: 14 of 14
+  Medication not taken:     13 of 14 days
+
+SIGNAL CONFIDENCE ASSESSMENT:
+  Sleep signal confidence: High — corroborated by multiple signals
+  Corroborating signals flagged: 6 of 6
+  Overall summary confidence: High
+
+IMPORTANT NOTE ON SLEEP DATA:
+Sleep tracking from consumer devices carries an inherent margin of error.
+This summary treats sleep as a contributory signal only, never as standalone evidence.
+All sleep findings are weighted against corroborating behavioral signals before surfacing.
+
+=================================================================
+
+AI-GENERATED CLINICAL SUMMARY:
+
+OVERALL TREND: High Concern
+SUMMARY CONFIDENCE: High — The overall summary confidence is high due to the presence of multiple corroborating signals, including significant changes in sleep, phone usage, daily steps, meal regularity, and social rhythm.
+
+BEHAVIORAL ALERT: Yes
+The patient's recent 39% decrease in sleep duration, coupled with a 1414% increase in late-night phone usage, suggests a potential manic episode, with high confidence in the sleep signal due to corroboration by multiple other signals.
+
+SIGNAL HIGHLIGHTS:
+Sleep: 4.2 hrs/night, with high confidence due to corroboration by multiple signals, including increased late-night phone usage and decreased meal regularity.
+Phone activity: Increased by 120% to 322 mins/day, potentially indicating increased stimulation or anxiety.
+Mobility: Increased by 58% to 12780 daily steps, which may suggest increased energy or agitation.
+Meal regularity: Decreased by 2.5 to 1.5/4, indicating potential disruption in daily routines.
+Social rhythm: Decreased by 2.4 to 1.6/4, suggesting potential social withdrawal or disruption.
+
+MEDICATION ADHERENCE SIGNAL:
+The behavioral data suggests potential non-adherence to medication, with 13 out of 14 days indicating missed medication, which may be contributing to the patient's recent behavioral changes.
+
+CLINICAL FOCUS AREAS FOR TODAY'S SESSION:
+1. Sleep disturbance and potential impact on mood stability
+2. Increased phone usage and potential correlation with anxiety or manic symptoms
+3. Disrupted meal regularity and social rhythm, potentially indicating changes in daily routines or social withdrawal
+4. Potential non-adherence to medication and its potential effects on the patient's condition
+5. Increased mobility and potential correlation with increased energy or agitation
+
+=================================================================
+Clinical decision-support only. Not a diagnostic tool.
+All signals relative to individual patient baseline.
+Sleep data weighted against corroborating signals.

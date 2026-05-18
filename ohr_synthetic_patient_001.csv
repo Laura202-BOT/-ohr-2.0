@@ -1,0 +1,22 @@
+day,date,sleep_hours,sleep_interrupted,phone_usage_minutes,late_night_usage_minutes,step_count,meal_regularity_score,social_rhythm_score,medication_taken,notes
+1,4/8/2026,7.2,0,145,12,8234,4,4,1,Baseline period
+2,4/9/2026,6.8,0,152,8,7891,4,4,1,Baseline period
+3,4/10/2026,7.1,0,138,15,8102,4,4,1,Baseline period
+4,4/11/2026,6.9,0,141,10,7654,4,4,1,Baseline period
+5,4/12/2026,7.3,0,149,9,8445,4,4,1,Baseline period
+6,4/13/2026,7,0,155,11,8231,4,4,1,Baseline period
+7,4/14/2026,6.7,0,143,13,7998,4,4,1,Baseline period
+8,4/15/2026,6.2,1,178,34,9102,3,3,1,Early deviation beginning
+9,4/16/2026,5.8,1,198,52,9876,3,3,0,Possible medication gap
+10,4/17/2026,5.1,1,234,89,10234,2,2,0,Sleep declining
+11,4/18/2026,4.6,1,267,112,11456,2,2,0,Late night activity elevated
+12,4/19/2026,4.2,1,298,145,12341,2,2,0,Significant deviation
+13,4/20/2026,3.8,1,334,178,13102,1,2,0,High concern
+14,4/21/2026,3.5,1,356,201,13891,1,1,0,High concern
+15,4/22/2026,4.1,1,312,187,12654,1,1,0,High concern
+16,4/23/2026,3.9,1,341,193,13234,1,1,0,High concern
+17,4/24/2026,3.6,1,378,212,14102,1,1,0,High concern
+18,4/25/2026,3.4,1,402,234,14567,1,1,0,High concern
+19,4/26/2026,3.2,1,423,256,15234,1,1,0,High concern
+20,4/27/2026,3.8,1,398,241,14891,1,1,0,High concern
+21,4/28/2026,4.1,1,387,228,14234,1,1,0,Appointment day
