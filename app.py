@@ -3,11 +3,13 @@ import pandas as pd
 import os
 from groq import Groq
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -66,9 +68,6 @@ select, input[type=text] { width: 100%; background: #1a1a18; border: 0.5px solid
 select:focus, input:focus { outline: none; border-color: #1D9E75; }
 .btn { background: #0F6E56; color: #fff; border: none; border-radius: 6px; padding: 10px 24px; font-size: 13px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 4px; }
 .btn:hover { background: #1D9E75; }
-.loading { text-align: center; padding: 40px; color: #888780; font-size: 13px; }
-.confidence-bar { height: 3px; background: #333331; border-radius: 2px; overflow: hidden; margin-top: 4px; }
-.conf-fill { height: 100%; border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -80,7 +79,6 @@ select:focus, input:focus { outline: none; border-color: #1D9E75; }
   <div style="font-size: 13px; color: #888780; margin-top: 4px;">Pre-Session Behavioral Summary Generator</div>
   <div style="font-size: 11px; color: #444442; margin-top: 8px; font-style: italic;">Clinical decision-support only. Not a diagnostic tool.</div>
 </div>
-
 <div class="form-section">
   <div class="form-title">Generate Pre-Session Summary</div>
   <form method="POST">
@@ -233,7 +231,8 @@ def index():
     clinician    = request.form.get("clinician")
     appt_date    = request.form.get("appt_date")
 
-    df = pd.read_csv(patient_file)
+    df = pd.read_csv(os.path.join(BASE_DIR, patient_file))
+
     baseline = df[df['day'] <= 7]
     recent   = df[df['day'] > 7]
 
@@ -350,8 +349,6 @@ IMPORTANT: Clinical decision-support only."""
     )
 
     summary = response.choices[0].message.content
-
-    from datetime import datetime
     generated_time = datetime.now().strftime("%b %d, %Y · %I:%M %p")
 
     return render_template_string(HTML_TEMPLATE,
