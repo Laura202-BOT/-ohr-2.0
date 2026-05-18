@@ -393,3 +393,218 @@ IMPORTANT: Clinical decision-support only."""
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False)
+
+def get_badge_and_color(pct_change, signal_type="generic"):
+    if signal_type == "sleep_manic":
+        if pct_change < -20: return "b-concern", "c-red", "High Concern"
+        elif pct_change < -10: return "b-elevated", "c-amber", "Elevated"
+        else: return "b-stable", "c-teal", "Stable"
+    elif signal_type == "sleep_depressive":
+        if pct_change > 20: return "b-depressive", "c-light", "Elevated"
+        else: return "b-stable", "c-teal", "Stable"
+    elif signal_type == "phone_manic":
+        if pct_change > 50: return "b-elevated", "c-amber", "Elevated"
+        else: return "b-stable", "c-teal", "Stable"
+    elif signal_type == "phone_depressive":
+        if pct_change < -30: return "b-depressive", "c-light", "Withdrawn"
+        else: return "b-stable", "c-teal", "Stable"
+    elif signal_type == "night":
+        if pct_change > 100: return "b-concern", "c-red", "High Concern"
+        elif pct_change > 50: return "b-elevated", "c-amber", "Elevated"
+        elif pct_change < -50: return "b-depressive", "c-light", "Reduced"
+        else: return "b-stable", "c-teal", "Stable"
+    else:
+        if abs(pct_change) > 30: return "b-elevated", "c-amber", "Elevated"
+        else: return "b-stable", "c-teal", "Stable"
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "GET":
+        return render_template_string(HTML_TEMPLATE, summary=None)
+
+    patient_file = request.form.get("patient_file")
+    patient_id   = request.form.get("patient_id")
+    clinician    = request.form.get("clinician")
+    appt_date    = request.form.get("appt_date")
+
+    df = pd.read_csv(os.path.join(BASE_DIR, patient_file))
+
+    baseline = df[df['day'] <= 7]
+    recent   = df[df['day'] > 7]
+
+    b_sleep  = baseline['sleep_hours'].mean()
+    b_phone  = baseline['phone_usage_minutes'].mean()
+    b_night  = baseline['late_night_usage_minutes'].mean()
+    b_steps  = baseline['step_count'].mean()
+    b_social = baseline['social_rhythm_score'].mean()
+
+    r_sleep  = recent['sleep_hours'].mean()
+    r_phone  = recent['phone_usage_minutes'].mean()
+    r_night  = recent['late_night_usage_minutes'].mean()
+    r_steps  = recent['step_count'].mean()
+    r_social = recent['social_rhythm_score'].mean()
+
+    med_gaps = (recent['medication_taken'] == 0).sum()
+
+    sleep_pct  = round(((r_sleep - b_sleep) / b_sleep) * 100)
+    phone_pct  = round(((r_phone - b_phone) / b_phone) * 100)
+    night_pct  = round(((r_night - b_night) / max(b_night, 1)) * 100)
+    steps_pct  = round(((r_steps - b_steps) / b_steps) * 100)
+    social_chg = round(r_social - b_social, 1)
+
+    sleep_flagged  = abs(sleep_pct)  > 20
+    phone_flagged  = abs(phone_pct)  > 30
+    night_flagged  = abs(night_pct)  > 50 and b_night > 2
+    steps_flagged  = abs(steps_pct)  > 25
+    social_flagged = abs(social_chg) > 0.5
+    med_flagged    = med_gaps >= 3
+
+    corroborating = sum([phone_flagged, night_flagged, steps_flagged, social_flagged, med_flagged])
+
+    if sleep_flagged and corroborating >= 2:
+        sleep_conf = "High"
+    elif sleep_flagged and corroborating == 1:
+        sleep_conf = "Medium"
+    elif sleep_flagged:
+        sleep_conf = "Low — possible noise"
+    else:
+        sleep_conf = "Within baseline"
+
+    total_flags = sum([sleep_flagged, phone_flagged, night_flagged, steps_flagged, social_flagged, med_flagged])
+    confidence  = "High" if total_flags >= 4 else ("Medium" if total_flags >= 2 else "Low")
+
+    is_depressive = sleep_pct > 15 and phone_pct < -20 and steps_pct < -20
+    is_manic      = sleep_pct < -15 and (phone_pct > 30 or steps_pct > 25)
+
+    if is_manic:
+        overall_trend = "High Concern"
+        trend_color   = "c-red"
+        alert_text    = f"Pattern consistent with possible manic shift. Sleep {sleep_pct}% below baseline. Late-night activity significantly elevated. Confidence: {confidence}."
+    elif is_depressive:
+        overall_trend = "Depressive Pattern"
+        trend_color   = "c-light"
+        alert_text    = f"Pattern consistent with possible depressive episode. Sleep {sleep_pct}% above baseline. Mobility and social engagement significantly reduced. Confidence: {confidence}."
+    elif total_flags >= 2:
+        overall_trend = "Elevated"
+        trend_color   = "c-amber"
+        alert_text    = f"Multiple behavioral signals deviating from baseline. Review flagged signals. Confidence: {confidence}."
+    else:
+        overall_trend = "Stable"
+        trend_color   = "c-teal"
+        alert_text    = None
+
+    # Medication proxy status — based on behavioral pattern shift only
+    if med_flagged:
+        med_status = "Pattern shift detected"
+        med_color  = "c-amber"
+        med_note   = f"Behavioral patterns across {med_gaps} of 14 days are consistent with what is typically observed during medication non-adherence in this population. This is a behavioral proxy only — Ohr cannot confirm whether medication was taken."
+    else:
+        med_status = "No pattern shift"
+        med_color  = "c-teal"
+        med_note   = "Behavioral patterns do not suggest a medication adherence concern. This is a behavioral proxy only — Ohr cannot confirm whether medication was taken."
+
+    if is_depressive:
+        sleep_badge, sleep_color, sleep_label = get_badge_and_color(sleep_pct, "sleep_depressive")
+        phone_badge, phone_color, phone_label = get_badge_and_color(phone_pct, "phone_depressive")
+    else:
+        sleep_badge, sleep_color, sleep_label = get_badge_and_color(sleep_pct, "sleep_manic")
+        phone_badge, phone_color, phone_label = get_badge_and_color(phone_pct, "phone_manic")
+
+    night_badge, night_color, night_label = get_badge_and_color(night_pct, "night")
+    steps_badge, steps_color, steps_label = get_badge_and_color(steps_pct)
+
+    clinical_data = f"""
+PATIENT: {patient_id} | DIAGNOSIS: Bipolar I Disorder
+APPOINTMENT: {appt_date} | {clinician}
+
+BASELINE (Days 1-7):
+  Sleep: {b_sleep:.1f} hrs/night | Phone: {b_phone:.0f} mins/day | Late-night: {b_night:.0f} mins | Steps: {b_steps:.0f}/day | Social rhythm: {b_social:.1f}/4
+
+RECENT (Days 8-21):
+  Sleep: {r_sleep:.1f} hrs/night ({sleep_pct:+d}%) | Phone: {r_phone:.0f} mins/day ({phone_pct:+d}%) | Late-night: {r_night:.0f} mins ({night_pct:+d}%)
+  Steps: {r_steps:.0f}/day ({steps_pct:+d}%) | Social rhythm: {r_social:.1f}/4
+
+MEDICATION ADHERENCE PROXY:
+  {med_note}
+
+CONFIDENCE: Sleep={sleep_conf} | Overall={confidence} | Corroborating signals={corroborating}/5
+NOTE: Sleep data carries margin of error and is weighted against corroborating signals only.
+ALL DATA: Passively collected via Apple HealthKit and Google Fit. No patient input required.
+"""
+
+    prompt = f"""You are Ohr, a clinical decision-support AI for psychiatrists treating bipolar disorder patients.
+
+Generate a concise Pre-Session Behavioral Summary. Follow these rules strictly:
+1. Use plain clinical language. Be specific with numbers.
+2. Never state that medication was or was not taken. Only describe behavioral patterns that are consistent or inconsistent with what is typically observed during medication non-adherence.
+3. Never present sleep as a standalone finding. Always reference corroborating signals.
+4. Never make diagnostic conclusions. Surface patterns for clinician interpretation only.
+5. Reference confidence levels where relevant.
+6. Only reference signals that can be passively collected from phone health APIs. Do not mention meal regularity or food intake.
+
+{clinical_data}
+
+Format your response as:
+OVERALL TREND: [one phrase]
+BEHAVIORAL ALERT: [Yes or No, one sentence if Yes]
+SIGNAL HIGHLIGHTS:
+- Sleep: [finding with confidence note]
+- Phone activity: [finding]
+- Late-night usage: [finding]
+- Mobility: [finding]
+MEDICATION ADHERENCE PROXY: [one sentence describing the behavioral pattern — never confirm or deny actual medication use]
+CLINICAL FOCUS AREAS: [3 to 4 specific behavioral patterns worth exploring today — not questions]
+IMPORTANT: Clinical decision-support only. All signals relative to individual baseline. Clinician judgment supersedes all outputs."""
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3,
+        max_tokens=800
+    )
+
+    summary = response.choices[0].message.content
+    generated_time = datetime.now().strftime("%b %d, %Y · %I:%M %p")
+
+    return render_template_string(HTML_TEMPLATE,
+        summary=summary,
+        patient_id=patient_id,
+        clinician=clinician,
+        appt_date=appt_date,
+        alert=alert_text,
+        overall_trend=overall_trend,
+        trend_color=trend_color,
+        confidence=confidence,
+        corroborating=corroborating,
+        med_status=med_status,
+        med_color=med_color,
+        sleep_avg=round(r_sleep, 1),
+        sleep_pct=f"{sleep_pct:+d}",
+        sleep_badge=sleep_badge,
+        sleep_color=sleep_color,
+        sleep_label=sleep_label,
+        sleep_confidence=sleep_conf,
+        baseline_sleep=round(b_sleep, 1),
+        phone_avg=round(r_phone),
+        phone_pct=f"{phone_pct:+d}",
+        phone_badge=phone_badge,
+        phone_color=phone_color,
+        phone_label=phone_label,
+        baseline_phone=round(b_phone),
+        night_avg=round(r_night),
+        night_pct=f"{night_pct:+d}",
+        night_badge=night_badge,
+        night_color=night_color,
+        night_label=night_label,
+        baseline_night=round(b_night),
+        steps_avg=round(r_steps),
+        steps_pct=f"{steps_pct:+d}",
+        steps_badge=steps_badge,
+        steps_color=steps_color,
+        steps_label=steps_label,
+        baseline_steps=round(b_steps),
+        generated_time=generated_time
+    )
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=False)
