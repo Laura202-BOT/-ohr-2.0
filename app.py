@@ -711,7 +711,7 @@ def index():
     social_color = "c-amber" if abs(social_chg) > 0.5 else "c-teal"
     social_label = "Routine disrupted" if abs(social_chg) > 0.5 else "Routine consistent"
 
-    sleep_plain = f"Usually sleeps {baseline_sleep:.0f} hrs — now averaging {round(r_sleep,1)} hrs. That is {abs(sleep_pct)}% {'less' if sleep_pct < 0 else 'more'} than usual."
+    sleep_plain = f"Usually sleeps {round(b_sleep,1)} hrs — now averaging {round(r_sleep,1)} hrs. That is {abs(sleep_pct)}% {'less' if sleep_pct < 0 else 'more'} than usual."
     phone_plain = f"Usually uses phone {round(b_phone):.0f} mins/day — now averaging {round(r_phone):.0f} mins. That is {abs(phone_pct)}% {'more' if phone_pct > 0 else 'less'} than usual."
     night_plain = f"Usually {round(b_night):.0f} mins of late-night phone use — now averaging {round(r_night):.0f} mins between midnight and 4am."
     steps_plain = f"Usually walks {round(b_steps):.0f} steps/day — now averaging {round(r_steps):.0f} steps. That is {abs(steps_pct)}% {'more' if steps_pct > 0 else 'less'} than usual."
