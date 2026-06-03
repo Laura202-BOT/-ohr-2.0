@@ -453,7 +453,7 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
   <div class="stat-card">
     <div class="stat-lbl">Medication Pattern</div>
     <div class="stat-val {{ med_color }}">{{ med_status }}</div>
-    <div class="stat-sub">behavioral pattern only</div>
+    <div class="stat-sub">behavioral inference only</div>
   </div>
 </div>
 
@@ -600,7 +600,7 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
 <!-- MEDICATION -->
 <div class="section-lbl">Medication pattern</div>
 <div class="med-card">
-  <div class="med-title">Medication Adherence — Behavioral Pattern Only</div>
+  <div class="med-title">Medication Adherence Pattern — Behavioral Inference Only</div>
   <div class="med-pill {{ med_pill_class }}">{{ med_status }}</div>
   <div class="med-text">{{ med_note }}</div>
 </div>
@@ -757,19 +757,19 @@ def index():
     first_name = patient_id.split()[0] if patient_id else "This patient"
 
     if is_manic:
-        overall_trend = "Changes detected"
+        overall_trend = "Changes Detected"
         trend_color   = "c-red"
         plain_class   = "concern"
         plain_english = f"{first_name} has been sleeping significantly less than usual and activity patterns have changed noticeably since your last visit. Worth exploring today."
         alert_text    = f"Sleep is {abs(sleep_pct)}% below {first_name}'s normal level. Late-night phone activity is also elevated. These changes together are associated with patterns seen prior to manic episodes."
     elif is_depressive:
-        overall_trend = "Changes detected"
+        overall_trend = "Changes Detected"
         trend_color   = "c-light"
         plain_class   = "warning"
         plain_english = f"{first_name} has been sleeping more than usual and appears to be moving and engaging less than their normal pattern. Worth exploring today."
         alert_text    = f"Sleep is {sleep_pct}% above {first_name}'s normal level. Daily movement and phone activity have both reduced significantly. These changes together are associated with patterns seen in depressive episodes."
     elif total_flags >= 2:
-        overall_trend = "Some changes"
+        overall_trend = "Some Changes"
         trend_color   = "c-amber"
         plain_class   = "warning"
         plain_english = f"Some of {first_name}'s behavioral patterns look different from their usual baseline since your last visit."
@@ -782,15 +782,15 @@ def index():
         alert_text    = None
 
     if med_flagged:
-        med_status     = "Pattern shift detected"
+        med_status     = "Routine change observed"
         med_color      = "c-amber"
         med_pill_class = "med-concern"
-        med_note       = f"Behavioral patterns over the past 14 days are associated with what is typically observed when patients in this population miss doses. Ohr cannot confirm whether medication was actually taken — this is a behavioral pattern signal only."
+        med_note       = f"Behavioral routine patterns over the past 14 days show changes associated with what is typically observed when patients in this population experience medication adherence disruption. This is a behavioral inference based on routine deviation from individual baseline — not confirmed adherence data. Methodology: Ohr detects changes in sleep timing, activity patterns, and phone usage relative to this patient's personal baseline and surfaces them as a pattern worth noting. The clinician interprets this signal using their own clinical judgment."
     else:
-        med_status     = "No pattern shift"
+        med_status     = "Routine consistent"
         med_color      = "c-teal"
         med_pill_class = "med-ok"
-        med_note       = f"Behavioral patterns do not suggest a medication adherence concern at this time. Ohr cannot confirm whether medication was actually taken — this is a behavioral pattern signal only."
+        med_note       = f"Behavioral routine patterns do not show changes associated with medication adherence disruption at this time. This is a behavioral inference based on routine consistency relative to individual baseline — not confirmed adherence data. The clinician interprets this signal using their own clinical judgment."
 
     if is_depressive:
         sleep_badge, sleep_color, sleep_label = get_badge_and_color(sleep_pct, "sleep_depressive")
