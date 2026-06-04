@@ -391,6 +391,7 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
         <select name="patient_file">
           <option value="ohr_synthetic_patient_001.csv">Patient 001 — Manic Episode (Synthetic)</option>
           <option value="ohr_synthetic_patient_002_depressive.csv">Patient 002 — Depressive Episode (Synthetic)</option>
+          <option value="ohr_real_patient_laura.csv">Patient 003 — Real Apple Watch Data (Proof of Concept)</option>
         </select>
       </div>
       <div class="form-group">
@@ -425,7 +426,12 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
   </div>
 </div>
 
-<div class="plain-summary {{ plain_class }}">{{ plain_english }}</div>
+{% if real_data %}
+<div style="background:rgba(29,158,117,0.1);border:1.5px solid #1D9E75;border-radius:10px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#1D9E75;display:flex;align-items:center;gap:10px;">
+  <span style="font-size:16px;">🔬</span>
+  <span><strong>Real passive data</strong> — generated from actual Apple Watch data collected via Apple Health. Not synthetic. This is Ohr processing real-world behavioral signals relative to an individual baseline.</span>
+</div>
+{% endif %}
 
 {% if alert %}
 <div class="alert-box">
@@ -685,14 +691,14 @@ def get_badge_and_color(pct_change, signal_type="generic"):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template_string(HTML_TEMPLATE, summary=None)
+        return render_template_string(HTML_TEMPLATE, summary=None, real_data=False)
 
     patient_file = request.form.get("patient_file")
     patient_id   = request.form.get("patient_id")
     clinician    = request.form.get("clinician")
     appt_date    = request.form.get("appt_date")
 
-    df = pd.read_csv(os.path.join(BASE_DIR, patient_file))
+    real_data = patient_file == "ohr_real_patient_laura.csv"
 
     baseline = df[df['day'] <= 7]
     recent   = df[df['day'] > 7]
@@ -925,6 +931,7 @@ IMPORTANT: Clinical decision-support only. Ohr is a collateral tool. All pattern
         social_label=social_label,
         social_plain=social_plain,
         baseline_social=round(b_social, 1),
+        real_data=real_data,
         generated_time=generated_time
     )
 
