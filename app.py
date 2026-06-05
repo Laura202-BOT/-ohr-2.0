@@ -25,10 +25,19 @@ body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; ba
 body.dark { background: #1a1a18; color: #e8e6e0; }
 .container { max-width: 740px; margin: 0 auto; }
 
-/* TOGGLE */
-.theme-toggle { position: fixed; top: 16px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #0F6E56; border-radius: 20px; padding: 7px 14px; cursor: pointer; font-size: 12px; font-weight: 700; color: #0F6E56; box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: all 0.3s; }
+/* TOGGLE + FONT CONTROLS */
+.top-controls { position: fixed; top: 16px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 8px; }
+.theme-toggle { display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #0F6E56; border-radius: 20px; padding: 7px 14px; cursor: pointer; font-size: 12px; font-weight: 700; color: #0F6E56; box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: all 0.3s; }
 body.dark .theme-toggle { background: #242421; border-color: #1D9E75; color: #1D9E75; }
 .theme-toggle:hover { opacity: 0.85; }
+.font-controls { display: flex; align-items: center; gap: 4px; background: #fff; border: 2px solid #0F6E56; border-radius: 20px; padding: 5px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+body.dark .font-controls { background: #242421; border-color: #1D9E75; }
+.font-btn { background: none; border: none; cursor: pointer; color: #0F6E56; font-weight: 700; padding: 2px 6px; border-radius: 6px; transition: background 0.2s; line-height: 1; }
+body.dark .font-btn { color: #1D9E75; }
+.font-btn:hover { background: rgba(15,110,86,0.1); }
+.font-btn.active { background: #0F6E56; color: white; }
+body.dark .font-btn.active { background: #1D9E75; }
+.font-divider { width: 1px; height: 14px; background: rgba(15,110,86,0.3); margin: 0 2px; }
 
 /* HEADER */
 .header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 2px solid #0F6E56; margin-bottom: 16px; margin-top: 48px; }
@@ -156,14 +165,28 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
 .btn { background: #0F6E56; color: #fff; border: none; border-radius: 10px; padding: 14px 24px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 8px; box-shadow: 0 4px 14px rgba(15,110,86,0.3); transition: background 0.2s; }
 .btn:hover { background: #1D9E75; }
 .back-link { display: block; text-align: center; margin-top: 18px; color: #0F6E56; font-size: 14px; font-weight: 700; text-decoration: none; }
+.phase2-note { background: #f4f3ee; border: 1.5px dashed #d3d1c7; border-radius: 14px; padding: 16px 20px; font-size: 13px; color: #888780; display: flex; align-items: center; gap: 12px; }
+body.dark .phase2-note { background: #1a1a18; border-color: #333331; }
+.phase2-title { font-weight: 700; color: #2c2c2a; margin-bottom: 4px; }
+body.dark .phase2-title { color: #e8e6e0; }
+.phase2-desc { font-size: 12px; line-height: 1.5; }
 </style>
 </head>
 <body id="body">
 
-<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
-  <span id="themeIcon">🌙</span>
-  <span id="themeLabel">Dark Mode</span>
-</button>
+<div class="top-controls">
+  <div class="font-controls">
+    <button class="font-btn" id="fontSm" onclick="setFont('sm')" style="font-size:11px;">A</button>
+    <div class="font-divider"></div>
+    <button class="font-btn active" id="fontMd" onclick="setFont('md')" style="font-size:14px;">A</button>
+    <div class="font-divider"></div>
+    <button class="font-btn" id="fontLg" onclick="setFont('lg')" style="font-size:18px;">A</button>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+    <span id="themeIcon">🌙</span>
+    <span id="themeLabel">Dark Mode</span>
+  </button>
+</div>
 
 <div class="container">
 
@@ -289,6 +312,7 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
     </div>
   </div>
 
+  {% if not real_data %}
   <div class="flip-card" id="card-phone" onclick="flipCard('card-phone')">
     <div class="flip-card-inner">
       <div class="flip-front">
@@ -313,6 +337,15 @@ select:focus, input:focus { outline: none; border-color: #0F6E56; }
       </div>
     </div>
   </div>
+  {% else %}
+  <div class="phase2-note">
+    <span style="font-size:20px;">📱</span>
+    <div>
+      <div class="phase2-title">Phone Activity — Phase 2</div>
+      <div class="phase2-desc">Screen time data requires Screen Time API integration. Apple Health export does not include this signal. Coming in Phase 2 alongside specific app usage with timestamps.</div>
+    </div>
+  </div>
+  {% endif %}
 
   <div class="flip-card" id="card-night" onclick="flipCard('card-night')">
     <div class="flip-card-inner">
@@ -426,6 +459,13 @@ function toggleTheme() {
   body.classList.toggle('dark');
   if (body.classList.contains('dark')) { label.textContent = 'Light Mode'; icon.textContent = '☀️'; }
   else { label.textContent = 'Dark Mode'; icon.textContent = '🌙'; }
+}
+
+function setFont(size) {
+  const sizes = { sm: '13px', md: '16px', lg: '20px' };
+  document.documentElement.style.fontSize = sizes[size];
+  document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('font' + size.charAt(0).toUpperCase() + size.slice(1)).classList.add('active');
 }
 function flipCard(cardId) {
   const card = document.getElementById(cardId);
