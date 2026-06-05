@@ -462,8 +462,25 @@ function toggleTheme() {
 }
 
 function setFont(size) {
-  const sizes = { sm: '13px', md: '16px', lg: '20px' };
-  document.documentElement.style.fontSize = sizes[size];
+  const scales = { sm: 0.85, md: 1.0, lg: 1.2 };
+  const scale = scales[size];
+  const elements = [
+    '.plain-summary', '.alert-body', '.stable-body',
+    '.stat-lbl', '.stat-val', '.stat-sub',
+    '.sig-name', '.sig-val-large', '.sig-plain-front',
+    '.back-item', '.back-conf', '.back-title',
+    '.med-title', '.med-text', '.summary-box',
+    '.patient-name', '.patient-meta', '.appt-date', '.appt-dr',
+    '.section-lbl', '.passive-note', '.footer-disc', '.footer-right',
+    '.med-pill', '.flip-hint', '.flip-back-hint', '.phase2-desc', '.phase2-title'
+  ];
+  elements.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      const base = parseFloat(el.getAttribute('data-base-size') || window.getComputedStyle(el).fontSize);
+      if (!el.getAttribute('data-base-size')) el.setAttribute('data-base-size', base);
+      el.style.fontSize = (base * scale) + 'px';
+    });
+  });
   document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('font' + size.charAt(0).toUpperCase() + size.slice(1)).classList.add('active');
 }
